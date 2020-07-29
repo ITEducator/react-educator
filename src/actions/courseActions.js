@@ -31,7 +31,7 @@ export const getCourse = (id, history) => async (dispatch) => {
 };
 
 // TODO
-export const deleteProject = (id) => async (dispatch) => {
+export const deleteCourse = (id) => async (dispatch) => {
   await axios.delete(`/api/courses/${id}`);
   dispatch({
     type: DELETE_COURSE,

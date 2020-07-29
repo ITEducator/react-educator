@@ -23,7 +23,7 @@ export const getCourses = () => async (dispatch) => {
 
 // TODO
 export const getCourse = (id, history) => async (dispatch) => {
-  const res = axios.get(`/api/courses/${id}`, course);
+  const res = axios.get(`/api/courses/${id}`);
   dispatch({
     type: GET_COURSE,
     payload: res.data,

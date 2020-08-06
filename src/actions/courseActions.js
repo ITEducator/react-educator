@@ -3,7 +3,11 @@ import { GET_COURSES, GET_ERRORS, GET_COURSE, DELETE_COURSE } from "./types";
 
 export const createCourse = (course, history) => async (dispatch) => {
   try {
-    await axios.post("/api/courses", course);
+    await axios.post("/api/courses", course, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
     history.push("/dashboard");
   } catch (err) {
     dispatch({
@@ -21,18 +25,21 @@ export const getCourses = () => async (dispatch) => {
   });
 };
 
-// TODO
 export const getCourse = (id, history) => async (dispatch) => {
-  const res = axios.get(`/api/courses/${id}`);
-  dispatch({
-    type: GET_COURSE,
-    payload: res.data,
-  });
+  try {
+    const res = await axios.get(`/api/courses/${id}`);
+    dispatch({
+      type: GET_COURSE,
+      payload: res.data,
+    });
+  } catch (error) {
+    history.push("/dashboard");
+  }
 };
 
-// TODO
-export const deleteCourse = (id) => async (dispatch) => {
+export const deleteCourse = (id, history) => async (dispatch) => {
   await axios.delete(`/api/courses/${id}`);
+  history.push("/dashboard");
   dispatch({
     type: DELETE_COURSE,
     payload: id,

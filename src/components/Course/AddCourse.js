@@ -124,7 +124,7 @@ class AddCourse extends Component {
               withIcon={true}
               buttonText="Choose image"
               onChange={this.onDrop}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+              imgExtension={[".jpg", ".gif", ".png"]}
               maxFileSize={5242880}
             />
             <input

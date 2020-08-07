@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Header from "./Layout/Header";
 import Login from "./components/UserManagement/Login";
+import Registration from "./components/UserManagement/Registration"
 import Dashboard from "./components/Dashboard";
 import AddCourse from "./components/Course/AddCourse";
 import UpdateCourse from "./components/Course/UpdateCourse";
@@ -16,6 +17,8 @@ function App() {
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/dashboard" component={Dashboard}></Route>
         <Route exact path="/addCourse" component={AddCourse}></Route>
+        <Route exact path="/login" component={Login}></Route>
+        <Route exact path="/registration" component={Registration}></Route>
         <Route exact path="/course/:id" component={SingleCourse}></Route>
         <Route exact path="/updateCourse/:id" component={UpdateCourse}></Route>
       </div>

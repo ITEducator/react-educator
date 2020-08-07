@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import ImageUploader from "react-images-upload";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { createCourse } from "../../actions/courseActions";
+import {
+  getCourse,
+  deleteCourse,
+  createCourse,
+} from "../../actions/courseActions";
 
-class AddCourse extends Component {
+class UpdateCourse extends Component {
   constructor() {
     super();
-
-    const defaultCategory = "be";
 
     this.state = {
       id: "",
@@ -17,13 +19,42 @@ class AddCourse extends Component {
       price: "",
       requirements: [],
       description: "",
-      category: defaultCategory,
+      category: "",
       image: {},
     };
 
     this.onDrop = this.onDrop.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getCourse(id, this.props.history);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      id,
+      title,
+      subtitle,
+      price,
+      requirements,
+      description,
+      category,
+      image,
+    } = nextProps.course;
+
+    this.setState({
+      id,
+      title,
+      subtitle,
+      price,
+      requirements,
+      description,
+      category,
+      image,
+    });
   }
 
   onDrop(picture) {
@@ -36,14 +67,8 @@ class AddCourse extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onChangeRequirements(e) {
-    const value = e.target.value.split(",").map((item) => item.trim());
-    this.setState({ requirements: value });
-  }
-
   onSubmit(e) {
     e.preventDefault();
-
     const courseData = {
       id: this.state.id,
       title: this.state.title,
@@ -54,20 +79,25 @@ class AddCourse extends Component {
       category: this.state.category,
     };
 
-    const newCourse = new FormData();
-    newCourse.append("course", JSON.stringify(courseData));
+    const updateCourse = new FormData();
+    updateCourse.append("course", JSON.stringify(courseData));
     if (this.state.image !== null && this.state.image.name !== undefined)
-      newCourse.append("image", this.state.image, this.state.image.name);
-    else newCourse.append("image", new Blob());
+      updateCourse.append("image", this.state.image, this.state.image.name);
+    else updateCourse.append("image", new Blob());
 
-    this.props.createCourse(newCourse, this.props.history);
+    this.props.createCourse(updateCourse, this.props.history);
+  }
+
+  onChangeRequirements(e) {
+    const value = e.target.value.split(",").map((item) => item.trim());
+    this.setState({ requirements: value });
   }
 
   render() {
     return (
       <div className="justify-content-center">
         <div className="w-50 mx-auto">
-          Creating Course
+          Updating Course
           <form onSubmit={this.onSubmit}>
             <input
               type="text"
@@ -138,8 +168,19 @@ class AddCourse extends Component {
   }
 }
 
-AddCourse.propTypes = {
+UpdateCourse.propTypes = {
+  getCourse: PropTypes.func.isRequired,
   createCourse: PropTypes.func.isRequired,
+  deleteCourse: PropTypes.func.isRequired,
+  course: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createCourse })(AddCourse);
+const mapStateToProps = (state) => ({
+  course: state.courseReducer.course,
+});
+
+export default connect(mapStateToProps, {
+  getCourse,
+  deleteCourse,
+  createCourse,
+})(UpdateCourse);

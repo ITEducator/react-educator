@@ -11,10 +11,10 @@ class Registration extends Component {
     this.state = {
       username: "",
       password: "",
-      firstName:"",
-      lastName:"",
-      biography:"",
-      image: {}
+      firstName: "",
+      lastName: "",
+      biography: "",
+      image: {},
     };
 
     this.onDrop = this.onDrop.bind(this);
@@ -39,18 +39,19 @@ class Registration extends Component {
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      biography: this.state.biography
+      biography: this.state.biography,
     };
 
     const user = new FormData();
     user.append("user", JSON.stringify(userData));
-    if (this.state.image !== null && this.state.image.name !== undefined){
+    if (this.state.image !== null && this.state.image.name !== undefined) {
       user.append("image", this.state.image, this.state.image.name);
     } else {
       user.append("image", new Blob());
     }
 
     this.props.createUser(user);
+    this.props.history.push('/login')
   }
 
   render() {
@@ -125,13 +126,13 @@ class Registration extends Component {
             onChange={this.onChange}
           ></input>
           <ImageUploader
-              name="image"
-              withIcon={true}
-              buttonText="Choose image"
-              onChange={this.onDrop}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              maxFileSize={5242880}
-            />
+            name="image"
+            withIcon={true}
+            buttonText="Choose image"
+            onChange={this.onDrop}
+            imgExtension={[".jpg", ".gif", ".png"]}
+            maxFileSize={5242880}
+          />
           <button
             className="btn btn-lg btn-primary btn-block mt-3"
             type="submit"
@@ -146,7 +147,7 @@ class Registration extends Component {
 }
 
 Registration.propTypes = {
-  createCourse: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
 };
 
 export default connect(null, { createUser })(Registration);

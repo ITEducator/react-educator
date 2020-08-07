@@ -17,13 +17,10 @@ function App() {
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/dashboard" component={Dashboard}></Route>
         <Route exact path="/addCourse" component={AddCourse}></Route>
-<<<<<<< HEAD
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/registration" component={Registration}></Route>
-=======
         <Route exact path="/course/:id" component={SingleCourse}></Route>
         <Route exact path="/updateCourse/:id" component={UpdateCourse}></Route>
->>>>>>> master
       </div>
     </Router>
   );

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ImageUploader from "react-images-upload";
+import { connect } from "react-redux";
 import { createUser } from "../../actions/userActions";
 
 class Registration extends Component {
@@ -143,4 +145,8 @@ class Registration extends Component {
   }
 }
 
-export default Registration;
+Registration.propTypes = {
+  createCourse: PropTypes.func.isRequired,
+};
+
+export default connect(null, { createUser })(Registration);

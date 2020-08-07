@@ -3,7 +3,7 @@ import { CREATE_USER } from "./types";
 
 export const createUser = (user) => async (dispatch) => {
     try {
-      await axios.post("/api/users", user, {
+      await axios.post("/api/users/add", user, {
         headers: {
           "content-type": "multipart/form-data",
         },

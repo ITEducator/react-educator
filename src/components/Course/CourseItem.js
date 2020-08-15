@@ -6,14 +6,12 @@ class CourseItem extends Component {
     const { course } = this.props;
     return (
       <div className="col-sm-2">
-        {course.image !== null ? (
+        {course.image.image !== undefined && (
           <img
             className="w-50"
             src={`data:image/png;base64,${course.image.image.data}`}
             alt="course_image"
           />
-        ) : (
-          ""
         )}
         <div className="card-body">
           <h5 className="card-title">{course.title} </h5>

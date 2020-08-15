@@ -80,10 +80,18 @@ class UpdateCourse extends Component {
     };
 
     const updateCourse = new FormData();
-    updateCourse.append("course", JSON.stringify(courseData));
-    if (this.state.image !== null && this.state.image.name !== undefined)
-      updateCourse.append("image", this.state.image, this.state.image.name);
-    else updateCourse.append("image", new Blob());
+    updateCourse.append(
+      "course",
+      new Blob([JSON.stringify(courseData)], {
+        type: "application/json",
+      })
+    );
+    const image = this.state.image;
+    if (image !== null && image.name !== undefined) {
+      updateCourse.append("image", image, image.name);
+    } else {
+      updateCourse.append("image", new Blob());
+    }
 
     this.props.createCourse(updateCourse, this.props.history);
   }

@@ -3,12 +3,12 @@ import { GET_COURSES, GET_ERRORS, GET_COURSE, DELETE_COURSE } from "./types";
 
 export const createCourse = (course, history) => async (dispatch) => {
   try {
-    await axios.post("/api/courses", course, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    });
+    await axios.post("/api/courses", course);
     history.push("/dashboard");
+    dispatch({
+      type: GET_ERRORS,
+      payload: {},
+    });
   } catch (err) {
     dispatch({
       type: GET_ERRORS,

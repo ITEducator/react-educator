@@ -7,6 +7,7 @@ import {
   deleteCourse,
   createCourse,
 } from "../../actions/courseActions";
+import classnames from "classnames";
 
 class UpdateCourse extends Component {
   constructor() {
@@ -21,6 +22,7 @@ class UpdateCourse extends Component {
       description: "",
       category: "",
       image: {},
+      errors: {},
     };
 
     this.onDrop = this.onDrop.bind(this);
@@ -34,6 +36,10 @@ class UpdateCourse extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+
     const {
       id,
       title,
@@ -67,6 +73,11 @@ class UpdateCourse extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onChangeRequirements(e) {
+    const value = e.target.value.split(",").map((item) => item.trim());
+    this.setState({ requirements: value });
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const courseData = {
@@ -96,12 +107,9 @@ class UpdateCourse extends Component {
     this.props.createCourse(updateCourse, this.props.history);
   }
 
-  onChangeRequirements(e) {
-    const value = e.target.value.split(",").map((item) => item.trim());
-    this.setState({ requirements: value });
-  }
-
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="justify-content-center">
         <div className="w-50 mx-auto">
@@ -109,47 +117,74 @@ class UpdateCourse extends Component {
           <form onSubmit={this.onSubmit}>
             <input
               type="text"
-              className="form-control mt-5"
+              className={classnames("form-control mt-5", {
+                "is-invalid": errors.title,
+              })}
               name="title"
               placeholder="Title"
               value={this.state.title}
               onChange={this.onChange}
             />
+            {errors.title && (
+              <div className="invalid-feedback">{errors.title}</div>
+            )}
             <input
               type="text"
-              className="form-control mt-2"
+              className={classnames("form-control mt-2", {
+                "is-invalid": errors.subtitle,
+              })}
               name="subtitle"
               placeholder="Subtitle"
               value={this.state.subtitle}
               onChange={this.onChange}
             />
+            {errors.subtitle && (
+              <div className="invalid-feedback">{errors.subtitle}</div>
+            )}
             <input
               type="text"
-              className="form-control mt-2"
+              className={classnames("form-control mt-2", {
+                "is-invalid": errors.price,
+              })}
               name="price"
               placeholder="Price"
               value={this.state.price}
               onChange={this.onChange}
             />
+            {errors.price && (
+              <div className="invalid-feedback">{errors.price}</div>
+            )}
             <input
               type="text"
-              className="form-control mt-2"
+              className={classnames("form-control mt-2", {
+                "is-invalid": errors.requirements,
+              })}
               name="requirements"
               placeholder="Requirements"
               value={this.state.requirements}
               onChange={this.onChangeRequirements.bind(this)}
             />
+            {errors.requirements && (
+              <div className="invalid-feedback">{errors.requirements}</div>
+            )}
             <input
               type="text"
-              className="form-control mt-2"
+              className={classnames("form-control mt-2", {
+                "is-invalid": errors.description,
+              })}
               name="description"
               placeholder="Description"
               value={this.state.description}
               onChange={this.onChange}
             />
+            {errors.description && (
+              <div className="invalid-feedback">{errors.description}</div>
+            )}
             <select
               name="category"
-              className="custom-select mt-2"
+              className={classnames("custom-select mt-2", {
+                "is-invalid": errors.category,
+              })}
               value={this.state.category}
               onChange={this.onChange}
             >
@@ -157,14 +192,20 @@ class UpdateCourse extends Component {
               <option value="fe">Front-End</option>
               <option value="ai">AI</option>
             </select>
+            {errors.category && (
+              <div className="invalid-feedback">{errors.category}</div>
+            )}
             <ImageUploader
               name="image"
               withIcon={true}
               buttonText="Choose image"
               onChange={this.onDrop}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+              imgExtension={[".jpg", ".gif", ".png"]}
               maxFileSize={5242880}
             />
+            {errors.imageNotFound && (
+              <div className="text-danger">{errors.imageNotFound}</div>
+            )}
             <input
               type="submit"
               className="btn btn-primary btn-block mt-3"
@@ -181,10 +222,12 @@ UpdateCourse.propTypes = {
   createCourse: PropTypes.func.isRequired,
   deleteCourse: PropTypes.func.isRequired,
   course: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   course: state.courseReducer.course,
+  errors: state.errorReducer,
 });
 
 export default connect(mapStateToProps, {

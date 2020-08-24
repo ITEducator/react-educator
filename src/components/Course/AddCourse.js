@@ -175,8 +175,8 @@ class AddCourse extends Component {
               imgExtension={[".jpg", ".gif", ".png"]}
               maxFileSize={5242880}
             />
-            {errors.image && (
-              <div className="invalid-feedback">{errors.image}</div>
+            {errors.imageNotFound && (
+              <div className="text-danger">{errors.imageNotFound}</div>
             )}
             <input
               type="submit"

@@ -44,14 +44,15 @@ class Registration extends Component {
 
     const user = new FormData();
     user.append("user", JSON.stringify(userData));
-    if (this.state.image !== null && this.state.image.name !== undefined) {
-      user.append("image", this.state.image, this.state.image.name);
+    const image = this.state.image;
+    if (image !== null && image.name !== undefined) {
+      user.append("image", image, image.name);
     } else {
       user.append("image", new Blob());
     }
 
     this.props.createUser(user);
-    this.props.history.push('/login')
+    this.props.history.push("/login");
   }
 
   render() {
